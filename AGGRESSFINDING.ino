@@ -1,6 +1,17 @@
-float offsetX = 0, offsetY = 0;
+#include <Wire.h>
 
-float x = event.magnetic.x - offsetX;
-float y = event.magnetic.y - offsetY;
+void setup() {
+  Wire.begin(21, 22);
+  Serial.begin(115200);
+  Serial.println("Scanning...");
 
-float heading = atan2(y, x);
+  for (byte i = 1; i < 127; i++) {
+    Wire.beginTransmission(i);
+    if (Wire.endTransmission() == 0) {
+      Serial.print("Found at: 0x");
+      Serial.println(i, HEX);
+    }
+  }
+}
+
+void loop() {}
